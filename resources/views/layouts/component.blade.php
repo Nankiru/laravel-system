@@ -17,6 +17,10 @@
     <link rel="stylesheet" href="{{ asset('assets1/css/glightbox.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets1/css/main.css') }}" />
 
+    <!-- SweetAlert2 CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
     @stack('styles') {{-- Optional stack for page-specific CSS --}}
 </head>
 
@@ -117,14 +121,11 @@
                                 </li>
                                 <li>
                                     <div class="select-position">
-                                        <select id="select5">
-                                            <option value="0" selected>English</option>
-                                            <option value="1">Español</option>
-                                            <option value="2">Filipino</option>
-                                            <option value="3">Français</option>
-                                            <option value="4">العربية</option>
-                                            <option value="5">हिन्दी</option>
-                                            <option value="6">বাংলা</option>
+                                        <select id="select5" class="p-1">
+                                            <option class="p-3" value="0" selected>English</option>
+                                            <option class="p-3" value="0" selected>Khmer</option>
+                                            <option class="p-3" value="0" selected>China</option>
+
                                         </select>
                                     </div>
                                 </li>
@@ -136,7 +137,7 @@
                             <ul class="useful-links">
                                 <li><a href="{{url('index')}}">Home</a></li>
                                 <li><a href="about-us.html">About Us</a></li>
-                                <li><a href="contact.html">Contact Us</a></li>
+                                <li><a href="{{ url('ContactUs') }}">Contact Us</a></li>
                             </ul>
                         </div>
                     </div>
@@ -148,24 +149,10 @@
                             </div>
                             <ul class="user-login">
                                 <li>
-                                    @guest
-                                        <a href="{{ url('signin') }}">Sign In</a>
-                                    @endguest
-
-                                    @auth
-                                        <form method="POST" action="{{ url('logout') }}">
-                                            @csrf
-                                            <button type="submit"
-                                                style="background: none; border: none; padding: 0; cursor: pointer; color: #007bff;">
-                                                Logout
-                                            </button>
-                                        </form>
-                                    @endauth
+                                    <a href="{{ url('signin') }}">Sign In</a>
                                 </li>
-
-
                                 <li>
-                                    <a href="register.html">Register</a>
+                                    <a href="{{ url('user_logout') }}">Logout</a>
                                 </li>
                             </ul>
                         </div>
@@ -198,7 +185,7 @@
                                             <option value="Tablets">Tablets</option>
                                             <option value="Smartphones">Smartphones</option>
                                         </select>
-                                        
+
                                         <script>
                                             document.getElementById('select1').addEventListener('change', function () {
                                                 const selectedCategory = this.value;
@@ -207,7 +194,7 @@
                                                 }
                                             });
                                         </script>
-                                        
+
                                     </div>
                                 </div>
                                 <form method="GET" action="{{url('search_index')}}" class="d-flex">
@@ -262,7 +249,7 @@
                                                             <i class="lni lni-close"></i>
                                                         </a>
                                                         <div class="cart-img-head">
-                                                            <a class="cart-img" href="{{ url('/product-details/' . $id) }}">
+                                                            <a class="cart-img" href="{{ url('/product-detail' , $id) }}">
                                                                 {{-- <img
                                                                     src="{{ asset('uploads/products/galaries/' . $item['image']) }}"
                                                                     alt="{{ $item['name'] }}"> --}}
@@ -273,7 +260,7 @@
                                                         <div class="content">
                                                             <h4>
                                                                 <a
-                                                                    href="{{ url('/product-details/' . $id) }}">{{ $item['name'] }}</a>
+                                                                    href="{{ url('/product-detail', $id) }}">{{ $item['name'] }}</a>
                                                             </h4>
                                                             <p class="quantity">
                                                                 {{ $item['quantity'] }}x -
@@ -838,11 +825,11 @@
                             <div class="single-footer f-link">
                                 <h3>Products</h3>
                                 <ul>
-                                    <li><a href="javascript:void(0)">Laptops</a></li>
-                                    <li><a href="javascript:void(0)">Tablets</a></li>
-                                    <li><a href="javascript:void(0)">Smartphones</a></li>
-                                    <li><a href="javascript:void(0)">Accessories</a></li>
-                                    <li><a href="javascript:void(0)">Watches</a></li>
+                                    <li><a href="{{ url('all-product/Laptops') }}">Laptops</a></li>
+                                    <li><a href="{{ url('all-product/Tablets') }}">Tablets</a></li>
+                                    <li><a href="{{ url('all-product/Smartphones') }}">Smartphones</a></li>
+                                    <li><a href="{{ url('all-product/Accessories') }}">Accessories</a></li>
+                                    <li><a href="{{ url('all-product/Watches') }}">Watches</a></li>
                                 </ul>
                             </div>
                             <!-- End Single Widget -->
@@ -874,7 +861,7 @@
                         <div class="col-lg-4 col-12">
                             <div class="payment-gateway">
                                 <span>We Accept:</span>
-                                <img src="assets1/images/footer/credit-cards-footer.png" alt="#">
+                                <img src="{{url('assets1/images/footer/credit-cards-footer.png')}}" alt="#">
                             </div>
                         </div>
                         <div class="col-lg-4 col-12">

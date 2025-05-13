@@ -264,18 +264,24 @@
         }
 
         to {
-          width: {{$percentage}}%;
+          width:
+          {{$percentage}}
+          %;
         }
         }
+
         @keyframes active-blue {
         from {
           width: 0%;
         }
 
         to {
-          width: {{$products}}%;
+          width:
+          {{$products}}
+          %;
         }
         }
+
         @keyframes growProgress {
         from {
           width: 0%;
@@ -379,34 +385,17 @@
         </div>
       </div>
       </div>
-      {{-- Card'
-      {{-- <div class="row">
-      @foreach ($users as $user)
-      @if ($user->name != 'Laravel 12')
-      <div class="col-sm-6 col-xl-3">
-      <div class="container d-flex justify-content-center align-items-center">
-      <div class="card profile-card w-100">
-        <div class="card-body text-center">
-        <img src="{{ asset('uploads/' . $user->img) }}" alt="User Profile"
-        class="rounded-circle profile-img mb-3" style="width: 100px; height: 100px; object-fit: cover;">
-        <h3 class="card-title mb-2" style="white-space: nowrap;">{{$user->name}}</h3>
-        <p class="card-text text-muted mb-3">{{$user->position}}</p>
-        <div class="social-icons mb-4">
-        <a href="#" class="me-2"><i class="bi bi-facebook"></i></a>
-        <a href="#"><i class="bi bi-instagram"></i></a>
-        </div>
-        </div>
-      </div>
-      </div>
-      </div>
-      @endif
-    @endforeach
-      </div> --}} --}}
 
 
+      <div class="row">
 
-      {{-- End Card --}}
+      </div>
+
+
     </div>
     </div>
   </div>
+
+
+
 @endsection

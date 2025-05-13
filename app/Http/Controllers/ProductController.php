@@ -165,6 +165,15 @@ class ProductController extends Controller
         return view('customerpage/all-product', compact('products', 'category', 'brand'));
     }
 
+    // ⁡⁢⁣⁢filterByCategory⁡
+    public function filterByCategory($category)
+    {
+        $products = Product::where('category', $category)
+            ->get();
+
+        return view('customerpage/all-product', compact('products', 'category'));
+    }
+
     /**
      * Display the specified resource.
      */

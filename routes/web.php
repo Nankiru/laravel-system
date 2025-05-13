@@ -1,12 +1,14 @@
 <?php
 
-use App\Http\Controllers\CartController;
-use App\Http\Controllers\LanguageController;
 use App\Http\Middleware\userAuth;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\MessageController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\LanguageController;
 
 Route::get('login', [LoginController::class, 'login']);
 Route::post('admin_register', [LoginController::class, 'admin_register']);
@@ -14,7 +16,6 @@ Route::post('admin_register', [LoginController::class, 'admin_register']);
 Route::post('admin_submit', [LoginController::class, 'admin_submit']);
 
 Route::post('logout', [LoginController::class, 'logout']);
-Route::post('user_logout', [LoginController::class, 'user_logout']);
 Route::get('/home', [LoginController::class, 'home']);
 Route::post('/forgot_password', [LoginController::class, 'forgot_password']);
 
@@ -23,8 +24,8 @@ Route::post('/forgot_password', [LoginController::class, 'forgot_password']);
 
 Route::post('user_login', [LoginController::class, 'user_login']);
 Route::get('signin', [UserController::class, 'user_signin']);
+Route::get('user_logout', [UserController::class, 'user_logout']);
 
-Route::post('user_logout', [LoginController::class, 'user_logout']);
 
 Route::get('/index', [ProductController::class, 'index']);
 
@@ -68,11 +69,17 @@ Route::middleware([UserAuth::class])->group(function () {
     Route::get('product-detail/{id}', [ProductController::class, 'ProductDetail']);
     // Route::get('/index', [ProductController::class, 'index']);
     Route::get('/all-product/{category}/{brand}', [ProductController::class, 'filterByCategoryBrand']);
-
+    Route::get('/all-product/{category}', [ProductController::class, 'filterByCategory']);
+    
     // Delete Product
     Route::get('/delete-product/{id}', [ProductController::class, 'delete']);
+    
+    // Message Route
+    // Auth::routes();
 
-
+    Route::get('/ContactUs', action: [MessageController::class, 'ContactUs']);
+    // Route::post('/contact_submit', action: [MessageController::class, 'contact_submit']);
+    Route::post('/contact_submit', action: [MessageController::class, 'contact_submit']);
 
 
 
@@ -86,14 +93,5 @@ Route::middleware([UserAuth::class])->group(function () {
     
 
 });
-
-// Route::middleware(['web'])->group(function () {
-//     Route::get('/', function () {
-//         if (session()->get('role') !== 'admin') {
-//             return redirect('/index');
-//         }
-//         return view('/');
-//     });
-// });
 
 

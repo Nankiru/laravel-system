@@ -12,13 +12,14 @@ class LoginController extends Controller
 {
 
 
-    protected function redirectTo(){
-        if(Auth::user()->role == 'admin'){
-            return redirect('/')->with('success','You are Admin');
-        }else{
-            return redirect('index')->with('success','Hello babee😘');
-        }
-    }
+    // protected function redirectTo()
+    // {
+    //     if (Auth::user()->role == 'admin') {
+    //         return redirect('/')->with('success', 'You are Admin');
+    //     } else {
+    //         return redirect('index')->with('success', 'Hello babee😘');
+    //     }
+    // }
     public function login()
     {
         return view('auth.login');
@@ -41,10 +42,10 @@ class LoginController extends Controller
         //     return redirect('/login')->with('error', 'Please login first.');
         // }
         $users = User::where('status', 1)->paginate(8);
-        $newusers = User::where('status',1)->whereDate('created_at', \Carbon\Carbon::today())->paginate(8);
+        $newusers = User::where('status', 1)->whereDate('created_at', \Carbon\Carbon::today())->paginate(8);
         // $users = User::whereDate('created_at', \Carbon\Carbon::today())->get();
 
-        return view('customerpage.index', compact('users','newusers'));
+        return view('customerpage.index', compact('users', 'newusers'));
     }
     public function admin_register(Request $request)
     {
@@ -95,6 +96,8 @@ class LoginController extends Controller
             return redirect('/login');
         }
     }
+
+
     public function user_login(Request $request)
 {
     // Validate request
@@ -107,21 +110,12 @@ class LoginController extends Controller
     $user = User::where('email', $request->email)
         ->where('name', $request->username)
         ->first();
-
     // Check if user exists
     if ($user) {
-        // Store user info in session
-        // $request->session()->put([
-        //     'id' => $user->id,
-        //     'name' => $user->name,
-        //     'img' => $user->img,
-        //     'role' => $user->role,
-        // ]);
         session([
             'id' => $user->id,
             'name_user' => $user->name,
             'img' => $user->img,
-            'role' => $user->role,
         ]);
 
         return redirect('/index')->with('success', 'Welcome back, ' . $user->name . '!');
@@ -130,6 +124,7 @@ class LoginController extends Controller
         return redirect('/signin')->with('error', 'Invalid credentials');
     }
 }
+
 
 
     // Logout user
@@ -184,11 +179,6 @@ class LoginController extends Controller
         $user->save();
 
         return back()->with('status', 'Password successfully reset!');
-    }
-    public function user_logout(Request $request)
-    {
-        $request->session()->flush(); // clears all session data
-        return redirect('/login');
     }
     public function update_img_admin($id)
     {

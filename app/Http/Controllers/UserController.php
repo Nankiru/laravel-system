@@ -19,7 +19,8 @@ class UserController extends Controller
         $users = User::where('status', 1)->get();
         $counts = User::where('status', 1)->count();
         $products = Product::where('status', 1)->count();
-        return view('index', compact('users', 'counts','products'));
+        $allproduct = Product::where('status',1)->get();
+        return view('index', compact('users', 'counts','products','allproduct'));
     }
 
     public function profileAdmin()
@@ -143,28 +144,38 @@ class UserController extends Controller
         $user->country = $request->country;
         $user->dob = $request->date;
 
-        if ($user->img && file_exists(public_path('uploads/' . $user->img)))
+        // if ($user->img && file_exists(public_path('uploads/' . $user->img)))
+        //     unlink(public_path('uploads/' . $user->img));
+
+        // // Store new image
+        // $imageName = $request->file('file')->getClientOriginalName();
+        // $request->file('file')->move(public_path('uploads/'), $imageName);
+
+        // $user->img = $imageName;
+
+    if ($request->hasFile('file')) {
+        // Delete old image
+        if ($user->img && file_exists(public_path('uploads/' . $user->img))) {
             unlink(public_path('uploads/' . $user->img));
+        }
 
         // Store new image
         $imageName = $request->file('file')->getClientOriginalName();
         $request->file('file')->move(public_path('uploads/'), $imageName);
-
         $user->img = $imageName;
-        // dd($user->img = $imageName);
 
         // Update session if necessary
-        if (session('id') == $id) {
-            session(['img' => $imageName]);
-        }
+    if (session('id') == $id) {
+        session(['img' => $imageName]);
+    }
+    }
+
 
         $user->updated_at = now();
         $user->save();
 
         return redirect('/')->with('success', 'User updated successfully!');
     }
-
-
 
     public function destroy($id)
     {
@@ -213,5 +224,12 @@ class UserController extends Controller
 
     public function user_signin(){
         return view('auth.userslogin');
+    }
+
+
+        public function user_logout()
+    {
+            session()->flush(); // clears all session data
+        return redirect('/signin')->with('status', 'You have been logged out.');
     }
 }

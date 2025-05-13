@@ -1,6 +1,19 @@
 @extends('layouts/component')
-@section('title', 'Product Details')
+@section('title', 'Product '.$product_detail->name)
 @section('contents')
+
+    {{-- Style Transition and duration --}}
+
+    <style>
+        #mainImage {
+            max-width: 100%;
+            max-height: 100vh;
+            margin: auto;
+            padding: 15px;
+            transition: opacity 0.4s ease-in-out;
+        }
+    </style>
+
 
     <!-- content product detail -->
     <section class="py-5">
@@ -83,10 +96,12 @@
                             <dt class="col-3 text-black" style="color: black">Storage</dt>
                             <dd class="col-9">{{ $product_detail->storage }}</dd>
 
-                            <dt class="col-3 text-black" style="color: black;white-space: nowrap; vertical-align: center;">Operating System</dt>
+                            <dt class="col-3 text-black " style="color: black;white-space: nowrap; vertical-align: center;">
+                                OS</dt>
                             <dd class="col-9">Window 11</dd>
 
-                            <dt class="col-3 text-black" style="color: black" style="white-space: nowrap; vertical-align: center;">CPU Model</dt>
+                            <dt class="col-3 text-black" style="color: black"
+                                style="white-space: nowrap; vertical-align: center;">CPU Model</dt>
                             <dd class="col-9">Core i7</dd>
 
                             <dt class="col-3 text-black" style="color: black">Screen Size</dt>
@@ -124,11 +139,17 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="d-flex justify-content-between align-items-center">
                         <a href="#" class="btn btn-warning shadow-0"> Buy now </a>
-                        <a href="#" class="btn btn-primary shadow-0"> <i class="me-1 fa fa-shopping-basket"></i> Add to cart
-                        </a>
+                        {{-- <a href="#" class="btn btn-primary shadow-0"> <i class="me-1 fa fa-shopping-basket"></i> Add to cart --}}
+                            <form action="{{ url('add_to_cart', $product_detail->id) }}" method="POST">
+                                @csrf
+                                <button type="submit" class="btn btn-primary shadow-0">Add to Cart</button>
+                            </form>
+                        {{-- </a> --}}
                         <a href="#" class="btn btn-light border border-secondary py-2 icon-hover px-3"> <i
                                 class="me-1 fa fa-heart fa-lg"></i> Save </a>
+                                </div>
                     </div>
                 </main>
             </div>
@@ -190,6 +211,7 @@
     </style>
 
 
+    {{--
     <script>
         document.querySelectorAll('.item-thumb').forEach(item => {
             item.addEventListener('click', function (e) {
@@ -199,7 +221,35 @@
                 mainImage.src = newSrc;
             });
         });
+    </script> --}}
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const mainImage = document.getElementById('mainImage');
+            const thumbnails = document.querySelectorAll('.item-thumb');
+
+            thumbnails.forEach(thumbnail => {
+                thumbnail.addEventListener('click', function (e) {
+                    e.preventDefault();
+
+                    const newSrc = this.getAttribute('data-img-src');
+
+                    // Fade out
+                    mainImage.style.opacity = 0;
+
+                    setTimeout(() => {
+                        // Change image source
+                        mainImage.src = newSrc;
+
+                        // Fade in
+                        mainImage.style.opacity = 1;
+                    }, 400); // Match this to the CSS transition duration
+                });
+            });
+        });
     </script>
+
 
 
 
